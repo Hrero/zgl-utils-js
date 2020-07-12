@@ -4,7 +4,7 @@
         "outDir": "./src",
         "sourceMap": true,
         "declaration": false,
-        "moduleResolution": "node",
+        "moduleResolution": "Classic",
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "importHelpers": true,
