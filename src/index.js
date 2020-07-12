@@ -1,4 +1,3 @@
-import * as tslib_1 from "tslib";
 const findArrayMaxCount = (arr) => {
     return new Promise(r => {
         let maxCount = 0;
@@ -35,7 +34,7 @@ const findArrayNumCount = (result, num) => {
         r(arr.slice(0, num));
     });
 };
-const handleMongoString = (field, data, Schema, from, type) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+const handleMongoString = async (field, data, Schema, from, type) => {
     // 插入拼接/删除某个表中某个字段
     /**
      * field 字段
@@ -45,31 +44,31 @@ const handleMongoString = (field, data, Schema, from, type) => tslib_1.__awaiter
      * type true插入 false删除
      * 以调用为触发
      */
-    return new Promise((r, j) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+    return new Promise(async (r, j) => {
         if (!field || !data || !Schema || !from) {
             return;
         }
-        const schemaData = yield Schema.findOne({
+        const schemaData = await Schema.findOne({
             _id: from
         });
         if ((!schemaData[field] || schemaData[field].indexOf(data) === -1) && type) {
-            yield Schema.update({ _id: from }, { [field]: schemaData[field] + ',' + data });
+            await Schema.update({ _id: from }, { [field]: schemaData[field] + ',' + data });
             r({});
         }
         else {
             const reg = new RegExp(data, 'g');
             const fieldData = schemaData[field].replace(reg, '');
-            yield Schema.update({ _id: from }, { [field]: fieldData });
+            await Schema.update({ _id: from }, { [field]: fieldData });
             r({});
         }
-    }));
-});
-const handleDataSameInArray = (array) => tslib_1.__awaiter(this, void 0, void 0, function* () {
-    return new Promise((r, j) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+    });
+};
+const handleDataSameInArray = async (array) => {
+    return new Promise(async (r, j) => {
         const newArray = array.map(item => JSON.stringify(item));
         r(Array.from(new Set(newArray)));
-    }));
-});
+    });
+};
 const removeDeduplication = (arr, keys) => {
     return new Promise(r => {
         const setArray = new Set();
