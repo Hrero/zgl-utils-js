@@ -97,5 +97,5 @@ const handleArrayDifferent = (arr1, arr2, keys, callback) => {
     });
     callback(cc);
 };
-export { findArrayMaxCount, findArrayNumCount, handleDataSameInArray, handleMongoString, removeDeduplication, handleArrayDifferent };
+export default { findArrayMaxCount, findArrayNumCount, handleDataSameInArray, handleMongoString, removeDeduplication, handleArrayDifferent };
 //# sourceMappingURL=index.js.map
