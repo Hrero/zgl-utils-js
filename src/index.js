@@ -1,3 +1,11 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 const findArrayMaxCount = (arr) => {
     return new Promise(r => {
         let maxCount = 0;
@@ -34,7 +42,7 @@ const findArrayNumCount = (result, num) => {
         r(arr.slice(0, num));
     });
 };
-const handleMongoString = async (field, data, Schema, from, type) => {
+const handleMongoString = (field, data, Schema, from, type) => __awaiter(this, void 0, void 0, function* () {
     // 插入拼接/删除某个表中某个字段
     /**
      * field 字段
@@ -44,31 +52,31 @@ const handleMongoString = async (field, data, Schema, from, type) => {
      * type true插入 false删除
      * 以调用为触发
      */
-    return new Promise(async (r, j) => {
+    return new Promise((r, j) => __awaiter(this, void 0, void 0, function* () {
         if (!field || !data || !Schema || !from) {
             return;
         }
-        const schemaData = await Schema.findOne({
+        const schemaData = yield Schema.findOne({
             _id: from
         });
         if ((!schemaData[field] || schemaData[field].indexOf(data) === -1) && type) {
-            await Schema.update({ _id: from }, { [field]: schemaData[field] + ',' + data });
+            yield Schema.update({ _id: from }, { [field]: schemaData[field] + ',' + data });
             r({});
         }
         else {
             const reg = new RegExp(data, 'g');
             const fieldData = schemaData[field].replace(reg, '');
-            await Schema.update({ _id: from }, { [field]: fieldData });
+            yield Schema.update({ _id: from }, { [field]: fieldData });
             r({});
         }
-    });
-};
-const handleDataSameInArray = async (array) => {
-    return new Promise(async (r, j) => {
+    }));
+});
+const handleDataSameInArray = (array) => __awaiter(this, void 0, void 0, function* () {
+    return new Promise((r, j) => __awaiter(this, void 0, void 0, function* () {
         const newArray = array.map(item => JSON.stringify(item));
         r(Array.from(new Set(newArray)));
-    });
-};
+    }));
+});
 const removeDeduplication = (arr, keys) => {
     return new Promise(r => {
         const setArray = new Set();
@@ -97,5 +105,8 @@ const handleArrayDifferent = (arr1, arr2, keys, callback) => {
     });
     callback(cc);
 };
-export { findArrayMaxCount, findArrayNumCount, handleDataSameInArray, handleMongoString, removeDeduplication, handleArrayDifferent };
+module.exports = {
+    findArrayMaxCount, findArrayNumCount,
+    handleDataSameInArray, handleMongoString, removeDeduplication, handleArrayDifferent
+};
 //# sourceMappingURL=index.js.map
