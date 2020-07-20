@@ -118,8 +118,59 @@ const getSomeIdAssign = (arr1, arr2, id, drop) => {
     });
     return arr1;
 };
+const priceFormat = (s) => {
+    if (/[^0-9\.]/.test(s)) {
+        return '0.00';
+    }
+    s = s.toString().replace(/^(\d*)$/, '$1.');
+    s = (s + '00').replace(/(\d*\.\d\d)\d*/, '$1');
+    s = s.replace('.', ',');
+    const re = /(\d)(\d{3},)/;
+    while (re.test(s)) {
+        s = s.replace(re, '$1,$2');
+    }
+    s = s.replace(/,(\d\d)$/, '.$1');
+    return s.replace(/^\./, '0.');
+};
+const dateFormat = (date, format) => {
+    let $date;
+    const padLeftZero = (str) => {
+        return ('00' + str).substr(str.length);
+    };
+    if (!date) {
+        return '';
+    }
+    else if (typeof date === 'string') {
+        const resetDate = date.indexOf('T') > -1 ? date : date.replace(/-/g, '/');
+        $date = new Date(resetDate);
+    }
+    else {
+        $date = new Date(date);
+    }
+    if (isNaN($date.getTime())) {
+        return date;
+    }
+    if (/(y+)/.test(format)) {
+        format = format.replace(RegExp.$1, ($date.getFullYear() + '').substr(4 - RegExp.$1.length));
+    }
+    const dateKey = {
+        'M+': $date.getMonth() + 1,
+        'd+': $date.getDate(),
+        'h+': $date.getHours(),
+        'm+': $date.getMinutes(),
+        's+': $date.getSeconds()
+    };
+    for (const key in dateKey) {
+        if (new RegExp(`(${key})`).test(format)) {
+            const str = dateKey[key].toString();
+            format = format.replace(RegExp.$1, RegExp.$1.length === 1 ? str : padLeftZero(str));
+        }
+    }
+    return format;
+};
 module.exports = {
     findArrayMaxCount, findArrayNumCount,
-    handleDataSameInArray, handleMongoString, removeDeduplication, handleArrayDifferent, getSomeIdAssign
+    handleDataSameInArray, handleMongoString, removeDeduplication, handleArrayDifferent, getSomeIdAssign,
+    priceFormat
 };
 //# sourceMappingURL=index.js.map
