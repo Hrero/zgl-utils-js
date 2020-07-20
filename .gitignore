@@ -1,4 +1,5 @@
 .DS_Store
 upload/upload_*
+node_modules
 .idea
 ts

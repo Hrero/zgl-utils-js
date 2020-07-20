@@ -1,15 +1,21 @@
 {
     "name": "zgl-utils-js",
-    "version": "0.0.6",
+    "version": "0.1.5",
     "description": "",
-    "main": "src/index.js",
+    "main": "lib/index.js",
     "scripts": {
-        "build": "tsc",
+        "build": "tsc && babel src -d lib",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "",
     "license": "ISC",
-    "devDependencies": {},
+    "devDependencies": {
+        "@purtuga/esm-webpack-plugin": "^1.2.1",
+        "babel-cli": "^6.26.0",
+        "babel-preset-env": "^1.7.0",
+        "webpack": "^4.43.0",
+        "webpack-cli": "^3.3.12"
+    },
     "dependencies": {
         "@types/node": "^14.0.22",
         "tslib": "^2.0.0"
