@@ -168,9 +168,35 @@ const dateFormat = (date, format) => {
     }
     return format;
 };
+const getMergeObject = (obj1, obj2) => {
+    for (let key in obj1) {
+        if (Array.isArray(obj1[key])) {
+            obj1[key] = obj2.hasOwnProperty(key) ? [...obj1[key], ...obj2[key]] : [...obj1[key]];
+        }
+        else if (obj1[key] instanceof Object) {
+            const keys = [];
+            for (let value in obj1[key]) {
+                if (Array.isArray(obj1[key][value])) {
+                    keys.push(key);
+                    obj1[key][value] = obj2.hasOwnProperty(key) && obj2[key].hasOwnProperty(value) ? [...obj1[key][value], ...obj2[key][value]] : [...obj1[key][value]];
+                }
+            }
+            obj1[key] = Object.assign({}, obj1[key], keys.some(cur => cur === key) ? {} : obj2.hasOwnProperty(key) ? obj2[key] : {});
+        }
+        else if (typeof obj1[key] === 'number' || typeof obj1[key] === 'string') {
+            obj1[key] = obj2.hasOwnProperty(key) ? obj2[key] : obj1[key];
+        }
+    }
+    for (let key in obj2) {
+        if (!obj1.hasOwnProperty(key)) {
+            obj1[key] = obj2[key];
+        }
+    }
+    return obj1;
+};
 module.exports = {
     findArrayMaxCount, findArrayNumCount,
     handleDataSameInArray, handleMongoString, removeDeduplication, handleArrayDifferent, getSomeIdAssign,
-    priceFormat
+    priceFormat, getMergeObject
 };
 //# sourceMappingURL=index.js.map
