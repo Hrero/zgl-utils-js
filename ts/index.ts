@@ -200,5 +200,5 @@ const getMergeObject = (obj1, obj2) => { // 合并类似webpack包development和
 module.exports = {
     findArrayMaxCount, findArrayNumCount,
     handleDataSameInArray, handleMongoString, removeDeduplication, handleArrayDifferent, getSomeIdAssign,
-    priceFormat, getMergeObject
+    priceFormat, getMergeObject, dateFormat
 };

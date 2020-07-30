@@ -87,6 +87,9 @@ const removeDeduplication = (arr, keys) => {
         r(call);
     });
 };
+/**
+ * 1.按照keys过滤数组对象相同的部分并且合并
+ */
 const handleArrayDifferent = (arr1, arr2, keys, callback) => {
     // 1.传入要改变数组对象1(老数组)，2.对比数组对象2，3.要检索的数组['x', 'y']值，4.处理函数
     // console.log(JSON.stringify(arr1), JSON.stringify(arr2), '======');
@@ -105,6 +108,9 @@ const handleArrayDifferent = (arr1, arr2, keys, callback) => {
     });
     callback(cc);
 };
+/**
+ * 合并两个数组，按照传入key-id，初始另一个key-drop的值为0
+ */
 const getSomeIdAssign = (arr1, arr2, id, drop) => {
     arr1.forEach((item1, index1) => {
         Object.assign(item1, {
