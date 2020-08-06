@@ -196,9 +196,29 @@ const getMergeObject = (obj1, obj2) => { // 合并类似webpack包development和
     }
     return obj1
 }
-
+const getDeepObjKeysValue = (target: any, path: string) => { //  getDeepObjKeysValue(obj, 'a.b.c.e');
+    // fields = ['a', 'b', 'c', 'd']
+    // obj = {a: {b: {c: { d: 123123, e: '我是eee' } } } }
+    const fields = path.split('.')
+    // obj = {a: {b: {c: { d: 123123, e: '我是eee' } } } }
+    let obj = target
+    // l = 4
+    const l = fields.length
+    // 通过循环，逐层深入，这里i最大是2
+    for (let i = 0; i < l - 1; i++) {
+        const key = fields[i]
+        if (!obj[key]) {
+        return undefined
+        }
+        obj = obj[key]
+    }
+    // obj = { d: 123123, e: '我是eee' }
+    // fields[l - 1] = d
+    // 所以 obj[fields[l - 1]] = obj[d] = 123123
+    return obj[fields[l - 1]]
+}
 module.exports = {
     findArrayMaxCount, findArrayNumCount,
     handleDataSameInArray, handleMongoString, removeDeduplication, handleArrayDifferent, getSomeIdAssign,
-    priceFormat, getMergeObject, dateFormat
+    priceFormat, getMergeObject, dateFormat, getDeepObjKeysValue
 };

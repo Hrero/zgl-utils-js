@@ -12,6 +12,7 @@ npm publish
 ## priceFormat ----- priceFormat(1000)
 ## dateFormat -----  dateFormat(new Date(), 'yyyy-MM-dd hh:mm:ss')
 ## getMergeObject ----- 合并类似webpack包development和production那种结构的对象数组
+## getDeepObjKeysValue ----- 取出obj对象下的值.xxxx (obj, 'a.b.c.d')
 
 
 
