@@ -2,6 +2,7 @@ js工具包
 
 npm publish
 
+## vs安装运行插件 code runner npm run build 之后 node ./lib/index
 ## findArrayMaxCount ----- 取数组中出现次数最多
 ## findArrayNumCount ----- 取数组中前出现次数20位
 ## handleDataSameInArray ----- 插入拼接/删除某个表中某个字段
@@ -13,6 +14,7 @@ npm publish
 ## dateFormat -----  dateFormat(new Date(), 'yyyy-MM-dd hh:mm:ss')
 ## getMergeObject ----- 合并类似webpack包development和production那种结构的对象数组
 ## getDeepObjKeysValue ----- 取出obj对象下的值.xxxx (obj, 'a.b.c.d')
+## flattenDeep ----- 数组扁平化[1,2,3,{}, [4, 5]] => [1, 2, 3, 4, {}, 4, 5]将数组展开，concat
 
 
 
