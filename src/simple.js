@@ -12,7 +12,11 @@ const priceFormat = (s) => {
     s = s.replace(/,(\d\d)$/, '.$1');
     return s.replace(/^\./, '0.');
 };
+const isEmpty = val => {
+    return typeof val === 'number' ? val === 0 : (true === !val || 0 == Object.keys(val).length);
+};
 export default {
-    priceFormat
+    priceFormat,
+    isEmpty
 };
 //# sourceMappingURL=simple.js.map

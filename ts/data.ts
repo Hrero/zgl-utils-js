@@ -162,9 +162,122 @@ const getDeepObjKeysValue = (target: any, path: string) => { //  getDeepObjKeysV
 const flattenDeep = (arr: Array<any>) => {
     return arr.reduce((acc, val) => Array.isArray(val) ? acc.concat(flattenDeep(val)) : acc.concat(val), []);
 };
+/**
+ * deepClone 深拷贝
+ */
+const deepClone = (target: any) => {
+    let result;
+    if (typeof target === 'object') {
+        if (Array.isArray(target)) {
+            result = [];
+            for (let i in target) {
+                result.push(deepClone(target[i]))
+            }
+        } else if(target===null) {
+            result = null;
+        } else if(target.constructor===RegExp){
+            result = target;
+        }else {
+            result = {};
+            for (let i in target) {
+                result[i] = deepClone(target[i]);
+            }
+        }
+    } else {
+        result = target;
+    }
+    return result;
+}
+/**
+ * 吧 ['', '']模式数组对象遍历，筛掉相应的key的多余索引元素(arr, ['name', 'userid'])
+ */
+const arrayDeepRemoveList = (array: Array<any>, keys: Array<any>) => {
+    return deepClone(array).reduce((pre, cur) => {
+        if (!keys.some(item => { return cur === item })) {
+            pre.push(cur);
+        }
+        return pre
+    }, []);
+}
+
+/**
+ * [''] = arr1
+ * [{}, {}] = arr2 从数组1中 遍历到arr2取出arr1中有的元素返回 arr3 = ['', '']
+ * option{
+ *  arr1,arr2,key,filer
+ * }
+ */
+
+function getArrObjectString(option: any) {
+    const { arr1, arr2, key, filer } = option;
+    const arr = [];
+    arr1.forEach((item, index) => {
+        arr2.forEach((ele, ji) => {
+            if (item.toString() ===  (ele[key]).toString()) {
+                arr.push(ele[filer])
+            }
+        })
+    });
+    const set = new Set(arr);
+    return Array.from(set)
+}
+
+/** 
+ * 取数组1的元素，到数组2中取出 匹配对象生成[{filer},{filer}] 返回
+ * filer = ['id', 'user'] 
+ */
+function getFilerArrayObjectString(option: any) {
+    const { arr1, arr2, key, filer } = option;
+    const arr = [];
+    arr1.forEach((item, index) => {
+        arr2.forEach((ele, ji) => {
+            const brr = Object.create({})
+            if (item.toString() ===  (ele[key]).toString()) {
+                filer.map(item => {
+                    return Object.assign(brr, {
+                        [item]: ele[item]
+                    })
+                })
+                arr.push(brr)
+            }
+        })
+    });
+    const set = new Set(arr);
+    return Array.from(set)
+}
+
+function getFilteraArrayList(arr1, arr2) { // 取两个数组不一样的元素 , 一维
+    return arr1.concat(arr2).filter((v, i, arr) => {
+        return arr.indexOf(v) === arr.lastIndexOf(v);
+    });
+};
+
+function getSmallObjectString(option: any) { // arr1 = [{}, {}] ,arr2 = ['',''] ,key = '';取出不在arr2中的值
+    const { arr1, arr2, key } = option;
+    const arr = [];
+    arr1.forEach((item, index) => {
+        const isIn = arr2.some(cur => item[key].toString() == cur);
+        if (!isIn) arr.push(item)
+    });
+    const set = new Set(arr);
+    return Array.from(set)
+}
+
+function uniqueData(data) { // 去掉同一数组的相同元素
+    for (let i = 0; i < data.length; i++) {
+        for (let j = i + 1; j < data.length; j++) {
+            if (data[i] === data[j]) {
+                data.splice(j, 1);
+            }
+        }
+    }
+    return data;
+}
 
 export default {
     findArrayMaxCount, findArrayNumCount,
     handleDataSameInArray, removeDeduplication, handleArrayDifferent, getSomeIdAssign,
-    getMergeObject, getDeepObjKeysValue, flattenDeep
+    getMergeObject, getDeepObjKeysValue, flattenDeep, deepClone, arrayDeepRemoveList,
+    getArrObjectString, getFilteraArrayList, getFilerArrayObjectString, getSmallObjectString
+    ,uniqueData
 };
